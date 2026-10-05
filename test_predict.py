@@ -1,7 +1,7 @@
 import requests
 
 
-SERVICE_URL = 'http://127.0.0.1:8000/predict'
+SERVICE_URL = 'http://127.0.0.1:8001/predict'
 
 
 def test_predict_local():
@@ -13,8 +13,9 @@ def test_predict_local():
         ('Clinton St & Joralemon St', 3.0, 3.0, 7.0, 3, 5, 18, 0),
         ('Cliff St & Fulton St', 0.0, 0.0, 0.0, 3, 1, 5, 1)
     ]
+    answers = (0, 3, 1, 2, 1)
 
-    for esn, c30, c60, c120, m, wd, h, hp in samples:
+    for (esn, c30, c60, c120, m, wd, h, hp), ans in zip(samples, answers):
 
         response = requests.post(
             SERVICE_URL,
@@ -30,7 +31,9 @@ def test_predict_local():
             }
         )
         
-        print(response.json())
+        prediction = response.json()
+        assert response.status_code == 200
+        assert prediction == ans
 
 
 if __name__ == '__main__':
