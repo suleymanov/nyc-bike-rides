@@ -14,7 +14,10 @@ model_smoke_test:
     - docker build -t nyc-bike-model:$CI_COMMIT_SHORT_SHA .
     - docker run -d --name model -p 8001:8000 nyc-bike-model:$CI_COMMIT_SHORT_SHA
     - sleep 10
-    - docker run --rm --network host -e SERVICE_URL=http://127.0.0.1:8001/predict -v "$PWD:/tests" python:3.12-slim sh -c "pip install requests && python /tests/test_predict.py"
+    - test_container=$(docker create --network host -e SERVICE_URL=http://127.0.0.1:8001/predict python:3.12-slim sh -c "pip install requests && python /test_predict.py")
+    - docker cp test_predict.py $test_container:/test_predict.py
+    - docker start -a $test_container
+    - docker rm $test_container
 
   after_script:
     - docker logs model || true
