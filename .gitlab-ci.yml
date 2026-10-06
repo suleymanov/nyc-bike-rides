@@ -26,8 +26,7 @@ use_image:
     - docker pull "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
     - docker run -d --name model -p 8001:8000 "$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"
     - sleep 10
-    - |
-      docker run --rm --network host curlimages/curl:latest \
-        -s -X POST http://127.0.0.1:8001/predict \
-        -H "Content-Type: application/json" \
-        -d '{"end_station_name":"W 43 St & 6 Ave","count_30":2.0,"count_60":8.0,"count_120":16.0,"month":3,"weekday":1,"hour":14,"hour_part":0}'
+    - test_container=$(docker create --network host -e SERVICE_URL=http://127.0.0.1:8001/predict python:3.12-slim sh -c "pip install requests && python /test_predict.py")
+    - docker cp test_predict.py $test_container:/test_predict.py
+    - docker start -a $test_container
+    - docker rm $test_container
