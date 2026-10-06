@@ -6,6 +6,9 @@ model_smoke_test:
   tags:
     - docker
 
+  variables:
+    DOCKER_HOST: "tcp://dind:2375"
+
   script:
     - echo "DOCKER_HOST=$DOCKER_HOST"
     - docker build -t nyc-bike-model:$CI_COMMIT_SHORT_SHA .
