@@ -1,8 +1,19 @@
 stages:
   - test
+  - build
+  - deploy
 
-hello:
+hello_test:
   stage: test
   script:
-    - echo "Hello from GitLab CI!"
-    - echo "Commit $CI_COMMIT_SHORT_SHA"
+    - echo "Test-Hello from commit at $CI_COMMIT_SHORT_SHA"
+
+hello_build:
+  stage: build
+  script:
+    - echo "Build-Hello from commit at $CI_COMMIT_SHORT_SHA"
+
+hello_deploy:
+  stage: deploy
+  script:
+    - echo "Deploy-Hello from commit at $CI_COMMIT_SHORT_SHA"
