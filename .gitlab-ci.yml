@@ -1,0 +1,19 @@
+stages:
+  - test
+
+model_smoke_test:
+  stage: test
+  tags:
+    - docker
+
+  script:
+    - docker build -t nyc-bike-model:$CI_COMMIT_SHORT_SHA .
+    - docker run -d --name model -p 8001:8000 nyc-bike-model:$CI_COMMIT_SHORT_SHA
+    - sleep 10
+    - pip install requests
+    - SERVICE_URL=http://127.0.0.1:8001/predict python test_predict.py
+
+  after_script:
+    - docker logs model || true
+    - docker stop model || true
+    - docker rm model || true

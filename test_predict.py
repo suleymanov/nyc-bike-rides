@@ -1,7 +1,9 @@
+import os
 import requests
 
 
-SERVICE_URL = 'http://127.0.0.1:8001/predict'
+# SERVICE_URL = 'http://127.0.0.1:8001/predict'
+SERVICE_URL = os.getenv('SERVICE_URL', 'http://127.0.0.1:8001/predict')
 
 
 def test_predict_local():
