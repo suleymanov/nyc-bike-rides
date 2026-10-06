@@ -7,6 +7,7 @@ model_smoke_test:
     - docker
 
   script:
+    - echo "DOCKER_HOST=$DOCKER_HOST"
     - docker build -t nyc-bike-model:$CI_COMMIT_SHORT_SHA .
     - docker run -d --name model -p 8001:8000 nyc-bike-model:$CI_COMMIT_SHORT_SHA
     - sleep 10
