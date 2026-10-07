@@ -46,6 +46,7 @@ jobs:
           docker run --rm \
             --network host \
             -e SERVICE_URL=http://127.0.0.1:8001/predict \
-            -v "$PWD/test_predict.py:/test_predict.py" \
+            -i \
             python:3.12-slim \
-            sh -c "pip install requests && python /test_predict.py"
+            sh -c "pip install requests && cat > /test_predict.py && python /test_predict.py" \
+            < test_predict.py
