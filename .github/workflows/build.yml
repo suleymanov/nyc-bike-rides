@@ -41,6 +41,9 @@ jobs:
       - name: Wait for model
         run: sleep 10
 
+      - name: Show files
+        run: ls -la
+
       - name: Run tests
         run: |
           docker run --rm \
