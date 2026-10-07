@@ -40,3 +40,9 @@ jobs:
 
       - name: Wait for model
         run: sleep 10
+
+            - name: Run inference
+        run: |
+          curl -s -X POST http://127.0.0.1:8001/predict \
+            -H "Content-Type: application/json" \
+            -d '{"end_station_name":"W 43 St & 6 Ave","count_30":2.0,"count_60":8.0,"count_120":16.0,"month":3,"weekday":1,"hour":14,"hour_part":0}'
